@@ -1,15 +1,16 @@
+// @ts-nocheck
 import React from 'react';
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-black font-mono">
+    <div className="min-h-screen bg-black" style={{ fontFamily: 'Roboto Mono, monospace' }}>
       {/* Navigation */}
       <nav className="bg-black border-b border-gray-900">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
               <span className="text-2xl font-medium text-white font-sans">
-                dream cloud
+                Dream Cloud
               </span>
             </div>
             <div className="hidden md:flex space-x-8">

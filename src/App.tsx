@@ -37,7 +37,7 @@ const App = () => {
   }, [countdown]);
 
   return (
-    <div className="min-h-screen bg-black" style={{ fontFamily: 'Roboto Mono, monospace' }}>
+    <div className="h-screen bg-black flex flex-col" style={{ fontFamily: 'Roboto Mono, monospace' }}>
       {/* Minimal Navigation */}
       <nav className="sticky top-0 z-50 bg-black bg-opacity-80 backdrop-blur-sm">
         <div className="max-w-5xl mx-auto px-4 py-3">
@@ -47,9 +47,10 @@ const App = () => {
         </div>
       </nav>
 
-      {/* Minimal Hero */}
-      <main className="max-w-5xl mx-auto px-4">
-        <div className="h-[80vh] flex flex-col justify-center items-center space-y-12">
+      {/* Main Content Container */}
+      <div className="flex-1 flex flex-col">
+        {/* Hero Section */}
+        <div className="flex-1 max-w-5xl mx-auto px-4 flex flex-col justify-center items-center space-y-8">
           <h1 className="text-4xl md:text-5xl font-medium text-white tracking-tight font-sans text-center">
             text
             <span className="text-gray-600">→</span>
@@ -73,28 +74,28 @@ const App = () => {
           </div>
         </div>
 
-        {/* Minimal Process */}
-        <div className="border-t border-gray-900 py-24">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
-            <div className="space-y-6 text-center">
+        {/* Process Section - Reduced Padding */}
+        <div className="border-t border-gray-900 max-w-5xl mx-auto w-full px-4">
+          <div className="py-12 grid grid-cols-3 gap-12">
+            <div className="space-y-3 text-center">
               <div className="text-gray-800 font-mono">01</div>
               <p className="text-gray-600 text-sm">describe</p>
             </div>
-            <div className="space-y-6 text-center">
+            <div className="space-y-3 text-center">
               <div className="text-gray-800 font-mono">02</div>
               <p className="text-gray-600 text-sm">generate</p>
             </div>
-            <div className="space-y-6 text-center">
+            <div className="space-y-3 text-center">
               <div className="text-gray-800 font-mono">03</div>
               <p className="text-gray-600 text-sm">create</p>
             </div>
           </div>
         </div>
-      </main>
+      </div>
 
       {/* Minimal Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-black bg-opacity-50 backdrop-blur-sm">
-        <div className="max-w-5xl mx-auto px-4 py-6 flex justify-end items-center">
+      <footer className="bg-black bg-opacity-50 backdrop-blur-sm">
+        <div className="max-w-5xl mx-auto px-4 py-4 flex justify-end items-center">
           <button 
             className={`text-white text-sm hover:text-gray-400 transition-colors ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={() => inputValue.trim() && setIsGenerating(true)}

@@ -1,87 +1,109 @@
-// @ts-nocheck
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const App = () => {
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [countdown, setCountdown] = useState(20);
+  const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    let timer;
+    if (isGenerating && countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown(prev => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isGenerating, countdown]);
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && inputValue.trim() !== '') {
+      setIsGenerating(true);
+    }
+  };
+
+  const resetGeneration = () => {
+    setIsGenerating(false);
+    setCountdown(20);
+  };
+
+  useEffect(() => {
+    if (countdown === 0) {
+      setTimeout(resetGeneration, 1000);
+    }
+  }, [countdown]);
+
   return (
     <div className="min-h-screen bg-black" style={{ fontFamily: 'Roboto Mono, monospace' }}>
-      {/* Navigation */}
-      <nav className="bg-black border-b border-gray-900">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-2xl font-medium text-white font-sans">
-                Dream Cloud
-              </span>
-            </div>
-            <div className="hidden md:flex space-x-8">
-              <button className="text-gray-500 hover:text-white transition-colors">
-                About
-              </button>
-              <button className="text-gray-500 hover:text-white transition-colors">
-                Features
-              </button>
-              <button className="text-gray-500 hover:text-white transition-colors">
-                Contact
-              </button>
-            </div>
-            <button className="bg-white hover:bg-gray-200 text-black px-6 py-2 rounded-full transition-colors">
-              Get Started
-            </button>
-          </div>
+      {/* Minimal Navigation */}
+      <nav className="sticky top-0 z-50 bg-black bg-opacity-80 backdrop-blur-sm">
+        <div className="max-w-5xl mx-auto px-4 py-3">
+          <span className="text-xl text-white font-mono tracking-tight">
+            <span className="text-gray-600">dream</span>cloud
+          </span>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 py-16">
-        <div className="text-center space-y-8">
-          <h1 className="text-5xl md:text-6xl font-medium text-white leading-tight tracking-tight font-sans">
-            Where Dreams Take
-            <span className="text-gray-400">
-              {" "}Flight
-            </span>
+      {/* Minimal Hero */}
+      <main className="max-w-5xl mx-auto px-4">
+        <div className="h-[80vh] flex flex-col justify-center items-center space-y-12">
+          <h1 className="text-4xl md:text-5xl font-medium text-white tracking-tight font-sans text-center">
+            text
+            <span className="text-gray-600">→</span>
+            video
           </h1>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-            Capture, explore, and understand your dreams in a beautiful digital sanctuary.
-            Let your subconscious soar through the depths of imagination.
-          </p>
-          <div className="flex justify-center space-x-4">
-            <button className="bg-white hover:bg-gray-200 text-black px-8 py-3 rounded-full text-lg transition-colors">
-              Start Your Journey
-            </button>
-            <button className="bg-black hover:bg-gray-900 text-white px-8 py-3 rounded-full text-lg border border-gray-800 transition-colors">
-              Learn More
-            </button>
+          
+          <div className="w-full max-w-2xl">
+            <input 
+              type="text" 
+              placeholder="describe..."
+              value={inputValue}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+              disabled={isGenerating}
+              className="w-full bg-transparent text-white p-4 rounded-none border-b border-gray-800 focus:border-gray-600 focus:outline-none text-center disabled:opacity-50"
+            />
+          </div>
+
+          <div className={`text-gray-600 text-sm tracking-wide transition-opacity duration-500 ${isGenerating ? 'opacity-100' : 'opacity-50'}`}>
+            {countdown} seconds
           </div>
         </div>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-          <div className="bg-gray-950 p-6 rounded-2xl border border-gray-900">
-            <h2 className="text-xl font-medium text-white mb-2 tracking-tight font-sans">
-              Dream Journal
-            </h2>
-            <p className="text-gray-500 leading-relaxed">
-              Record and revisit your dreams in a minimalist, focused interface.
-            </p>
-          </div>
-          <div className="bg-gray-950 p-6 rounded-2xl border border-gray-900">
-            <h2 className="text-xl font-medium text-white mb-2 tracking-tight font-sans">
-              Dream Analysis
-            </h2>
-            <p className="text-gray-500 leading-relaxed">
-              Gain insights into your dreams with powerful analysis tools.
-            </p>
-          </div>
-          <div className="bg-gray-950 p-6 rounded-2xl border border-gray-900">
-            <h2 className="text-xl font-medium text-white mb-2 tracking-tight font-sans">
-              Dream Community
-            </h2>
-            <p className="text-gray-500 leading-relaxed">
-              Connect with others and share your dream experiences.
-            </p>
+        {/* Minimal Process */}
+        <div className="border-t border-gray-900 py-24">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-24">
+            <div className="space-y-6 text-center">
+              <div className="text-gray-800 font-mono">01</div>
+              <p className="text-gray-600 text-sm">describe</p>
+            </div>
+            <div className="space-y-6 text-center">
+              <div className="text-gray-800 font-mono">02</div>
+              <p className="text-gray-600 text-sm">generate</p>
+            </div>
+            <div className="space-y-6 text-center">
+              <div className="text-gray-800 font-mono">03</div>
+              <p className="text-gray-600 text-sm">create</p>
+            </div>
           </div>
         </div>
       </main>
+
+      {/* Minimal Footer */}
+      <footer className="fixed bottom-0 left-0 right-0 bg-black bg-opacity-50 backdrop-blur-sm">
+        <div className="max-w-5xl mx-auto px-4 py-6 flex justify-end items-center">
+          <button 
+            className={`text-white text-sm hover:text-gray-400 transition-colors ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={() => inputValue.trim() && setIsGenerating(true)}
+            disabled={isGenerating}
+          >
+            enter
+          </button>
+        </div>
+      </footer>
     </div>
   );
 };

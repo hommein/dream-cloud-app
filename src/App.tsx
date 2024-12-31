@@ -25,14 +25,11 @@ const App = () => {
     }
   };
 
-  const resetGeneration = () => {
-    setIsGenerating(false);
-    setCountdown(20);
-  };
-
   useEffect(() => {
     if (countdown === 0) {
-      setTimeout(resetGeneration, 1000);
+      setIsGenerating(false);
+      // Reset countdown after the fade out animation
+      setTimeout(() => setCountdown(20), 500);
     }
   }, [countdown]);
 

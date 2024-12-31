@@ -69,8 +69,8 @@ const App = () => {
             />
           </div>
 
-          <div className={`text-gray-600 text-sm tracking-wide transition-opacity duration-500 ${isGenerating ? 'opacity-100' : 'opacity-50'}`}>
-            {countdown} seconds
+          <div className={`text-gray-600 text-sm tracking-wide transition-opacity duration-500 ${isGenerating ? 'opacity-100' : 'opacity-0'}`}>
+            {countdown}
           </div>
         </div>
 

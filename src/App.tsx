@@ -5,6 +5,26 @@ const App = () => {
   const [countdown, setCountdown] = useState(20);
   const [inputValue, setInputValue] = useState('');
 
+  // Function to log user inputs
+  const logUserInput = async (input: string) => {
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbygryr7-QA6ZR-v1Rg_KiAlcU3orSKFq_Uaxf-AIaFtCvtePiRxKvPcKaDoswZYJt_S_w/exec', {
+        method: 'POST',
+        mode: 'no-cors', // Important!
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          input: input,
+          timestamp: new Date().toISOString()
+        })
+      });
+      console.log('Logged input:', input);
+    } catch (error) {
+      console.error('Logging error:', error);
+    }
+  };
+
   useEffect(() => {
     let timer;
     if (isGenerating && countdown > 0) {
@@ -15,23 +35,33 @@ const App = () => {
     return () => clearInterval(timer);
   }, [isGenerating, countdown]);
 
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && inputValue.trim() !== '') {
-      setIsGenerating(true);
-    }
-  };
-
   useEffect(() => {
     if (countdown === 0) {
       setIsGenerating(false);
-      // Reset countdown after the fade out animation
       setTimeout(() => setCountdown(20), 500);
     }
   }, [countdown]);
+
+  // Input change handler
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  // Enter key handler
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && inputValue.trim() !== '') {
+      setIsGenerating(true);
+      logUserInput(inputValue.trim()); // Log the input when user presses Enter
+    }
+  };
+
+  // Enter button click handler
+  const handleEnterClick = () => {
+    if (inputValue.trim() !== '') {
+      setIsGenerating(true);
+      logUserInput(inputValue.trim()); // Log the input when user clicks enter button
+    }
+  };
 
   return (
     <div className="h-screen bg-black flex flex-col" style={{ fontFamily: 'Roboto Mono, monospace' }}>
@@ -71,7 +101,7 @@ const App = () => {
           </div>
         </div>
 
-        {/* Process Section - Reduced Padding */}
+        {/* Process Section */}
         <div className="border-t border-gray-900 max-w-5xl mx-auto w-full px-4">
           <div className="py-12 grid grid-cols-3 gap-12">
             <div className="space-y-3 text-center">
@@ -95,7 +125,7 @@ const App = () => {
         <div className="max-w-5xl mx-auto px-4 py-4 flex justify-end items-center">
           <button 
             className={`text-white text-sm hover:text-gray-400 transition-colors ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={() => inputValue.trim() && setIsGenerating(true)}
+            onClick={handleEnterClick}
             disabled={isGenerating}
           >
             enter

@@ -19,7 +19,7 @@ const App = () => {
 
     script.onload = () => {
       window.google.accounts.id.initialize({
-        client_id: '404174678278-89a0buvlj5j2s2p5b7vkpj8g5nkb82lt.apps.googleusercontent.com',
+        client_id: '686063210353-nd6vvl07equsdmos1g3s81vfsq417l4f.apps.googleusercontent.com',
         callback: handleCredentialResponse
       });
       window.google.accounts.id.renderButton(

@@ -1,29 +1,58 @@
 import { useEffect, useState } from 'react';
-import { auth, googleProvider } from './firebase';
-import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import MainApp from './components/MainApp';
+
+declare global {
+  interface Window {
+    google: any;
+  }
+}
 
 const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    onAuthStateChanged(auth, setUser);
+    // Load Google's OAuth script
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      window.google.accounts.id.initialize({
+        client_id: 'YOUR_CLIENT_ID', // Replace with your Google Client ID
+        callback: handleCredentialResponse
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById("signInDiv"),
+        { 
+          theme: "filled_black", 
+          size: "large",
+          text: "continue_with", // Makes it say "Continue with Google"
+          shape: "pill" // Rounded button
+        }
+      );
+    };
   }, []);
+
+  const handleCredentialResponse = (response: any) => {
+    setUser(response.credential);
+  };
+
+  const handleSignOut = () => {
+    window.google.accounts.id.disableAutoSelect();
+    setUser(null);
+  };
 
   if (!user) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <button
-          onClick={() => signInWithPopup(auth, googleProvider)}
-          className="bg-white text-black px-6 py-2 rounded-full"
-        >
-          continue with google
-        </button>
+        <div id="signInDiv"></div>
       </div>
     );
   }
 
-  return <MainApp />;
+  return <MainApp onSignOut={handleSignOut} />;
 };
 
 export default App;

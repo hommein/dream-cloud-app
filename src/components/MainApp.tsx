@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { auth } from '../firebase';
-import { signOut } from 'firebase/auth';
+// Removed firebase import
 
-const MainApp = () => {
+interface MainAppProps {
+  onSignOut: () => void;
+}
+
+const MainApp = ({ onSignOut }: MainAppProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [countdown, setCountdown] = useState(20);
   const [inputValue, setInputValue] = useState('');
@@ -43,7 +46,7 @@ const MainApp = () => {
             <span className="text-gray-600">dream</span>cloud
           </span>
           <button 
-            onClick={() => signOut(auth)} 
+            onClick={onSignOut}
             className="text-gray-500 hover:text-white transition-colors"
           >
             sign out

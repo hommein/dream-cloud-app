@@ -11,7 +11,6 @@ const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Load Google's OAuth script
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
@@ -20,7 +19,7 @@ const App = () => {
 
     script.onload = () => {
       window.google.accounts.id.initialize({
-        client_id: 'YOUR_CLIENT_ID', // Replace with your Google Client ID
+        client_id: '123456789-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com', // Replace with your actual Client ID
         callback: handleCredentialResponse
       });
       window.google.accounts.id.renderButton(
@@ -28,8 +27,8 @@ const App = () => {
         { 
           theme: "filled_black", 
           size: "large",
-          text: "continue_with", // Makes it say "Continue with Google"
-          shape: "pill" // Rounded button
+          text: "continue_with",
+          shape: "pill"
         }
       );
     };

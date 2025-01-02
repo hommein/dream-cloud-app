@@ -1,3 +1,4 @@
+// src/App.tsx
 import { useEffect, useState } from 'react';
 import MainApp from './components/MainApp';
 
@@ -8,7 +9,7 @@ declare global {
 }
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<string | null>(null);  // Add type for user state
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -19,7 +20,7 @@ const App = () => {
 
     script.onload = () => {
       window.google.accounts.id.initialize({
-        client_id: '123456789-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com', // Replace with your actual Client ID
+        client_id: 'YOUR_CLIENT_ID',
         callback: handleCredentialResponse
       });
       window.google.accounts.id.renderButton(

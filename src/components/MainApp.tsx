@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 interface MainAppProps {
   onSignOut: () => void;
-  user?: { email: string | null };  // Add user prop
+  user?: { email: string | null };
 }
 
 const MainApp = ({ onSignOut, user }: MainAppProps) => {
@@ -12,7 +12,7 @@ const MainApp = ({ onSignOut, user }: MainAppProps) => {
 
   const logInput = async (input: string) => {
     try {
-      await fetch('/api/log-input', {
+      const response = await fetch('/api/log-input', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,6 +22,11 @@ const MainApp = ({ onSignOut, user }: MainAppProps) => {
           userEmail: user?.email
         })
       });
+      if (!response.ok) {
+        throw new Error('Failed to log input');
+      }
+      const data = await response.json();
+      console.log('Input logged successfully:', data);
     } catch (error) {
       console.error('Failed to log input:', error);
     }
@@ -51,14 +56,14 @@ const MainApp = ({ onSignOut, user }: MainAppProps) => {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {
       setIsGenerating(true);
-      logInput(inputValue.trim());  // Log the input when Enter is pressed
+      logInput(inputValue.trim());
     }
   };
 
   const handleEnterClick = () => {
     if (inputValue.trim()) {
       setIsGenerating(true);
-      logInput(inputValue.trim());  // Log the input when button is clicked
+      logInput(inputValue.trim());
     }
   };
 

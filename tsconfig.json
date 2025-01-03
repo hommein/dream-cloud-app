@@ -17,7 +17,10 @@
       /* Linting */
       "strict": false,
       "noUnusedLocals": false,
-      "noUnusedParameters": false
+      "noUnusedParameters": false,
+  
+      /* Cloudflare Workers */
+      "types": ["@cloudflare/workers-types"]
     },
-    "include": ["src"]
+    "include": ["src", "functions"]
   }

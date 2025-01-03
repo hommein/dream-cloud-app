@@ -1,0 +1,7 @@
+name = "dream-cloud"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dream-inputs"
+database_id = "4ea3f05f-f7e9-41df-8c4c-8e1daeb13dae"

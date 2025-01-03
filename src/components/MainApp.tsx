@@ -1,14 +1,31 @@
 import React, { useState, useEffect } from 'react';
-// Removed firebase import
 
 interface MainAppProps {
   onSignOut: () => void;
+  user?: { email: string | null };  // Add user prop
 }
 
-const MainApp = ({ onSignOut }: MainAppProps) => {
+const MainApp = ({ onSignOut, user }: MainAppProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [countdown, setCountdown] = useState(20);
   const [inputValue, setInputValue] = useState('');
+
+  const logInput = async (input: string) => {
+    try {
+      await fetch('/api/log-input', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          input,
+          userEmail: user?.email
+        })
+      });
+    } catch (error) {
+      console.error('Failed to log input:', error);
+    }
+  };
 
   useEffect(() => {
     let timer;
@@ -34,6 +51,14 @@ const MainApp = ({ onSignOut }: MainAppProps) => {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {
       setIsGenerating(true);
+      logInput(inputValue.trim());  // Log the input when Enter is pressed
+    }
+  };
+
+  const handleEnterClick = () => {
+    if (inputValue.trim()) {
+      setIsGenerating(true);
+      logInput(inputValue.trim());  // Log the input when button is clicked
     }
   };
 
@@ -105,7 +130,7 @@ const MainApp = ({ onSignOut }: MainAppProps) => {
         <div className="max-w-5xl mx-auto px-4 py-4 flex justify-end items-center">
           <button 
             className={`text-white text-sm hover:text-gray-400 transition-colors ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}
-            onClick={() => inputValue.trim() && setIsGenerating(true)}
+            onClick={handleEnterClick}
             disabled={isGenerating}
           >
             enter

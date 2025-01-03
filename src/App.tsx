@@ -7,8 +7,14 @@ declare global {
   }
 }
 
+interface GoogleUser {
+  email: string;
+  name: string;
+  picture: string;
+}
+
 const App = () => {
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<GoogleUser | null>(null);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -19,7 +25,7 @@ const App = () => {
 
     script.onload = () => {
       window.google.accounts.id.initialize({
-        client_id: '686063210353-nd6vvl07equsdmos1g3s81vfsq417l4f.apps.googleusercontent.com',
+        client_id: 'client_id',
         callback: handleCredentialResponse
       });
       window.google.accounts.id.renderButton(
@@ -35,7 +41,13 @@ const App = () => {
   }, []);
 
   const handleCredentialResponse = (response: any) => {
-    setUser(response.credential);
+    // Decode the JWT token to get user info
+    const decodedToken = JSON.parse(atob(response.credential.split('.')[1]));
+    setUser({
+      email: decodedToken.email,
+      name: decodedToken.name,
+      picture: decodedToken.picture
+    });
   };
 
   const handleSignOut = () => {
@@ -51,7 +63,7 @@ const App = () => {
     );
   }
 
-  return <MainApp onSignOut={handleSignOut} />;
+  return <MainApp onSignOut={handleSignOut} user={{ email: user.email }} />;
 };
 
 export default App;

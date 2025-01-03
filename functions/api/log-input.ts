@@ -1,17 +1,19 @@
-import { D1Database, ExecutionContext } from '@cloudflare/workers-types';
+import { D1Database } from '@cloudflare/workers-types';
 
 interface Env {
   DB: D1Database;
 }
 
+type AppContext = {
+  request: Request;
+  env: Env;
+  params: { [key: string]: string };
+};
+
 interface InputRequest {
   input: string;
   userEmail: string | null;
 }
-
-type AppContext = ExecutionContext & {
-  env: Env;
-};
 
 export const onRequest = async (context: AppContext) => {
   if (context.request.method !== 'POST') {

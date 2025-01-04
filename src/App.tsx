@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import MainApp from './components/MainApp';
+import ViewInputs from './components/ViewInputs';
 
 declare global {
   interface Window {
@@ -15,6 +16,7 @@ interface GoogleUser {
 
 const App = () => {
   const [user, setUser] = useState<GoogleUser | null>(null);
+  const [isViewingInputs, setIsViewingInputs] = useState(false);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -63,7 +65,31 @@ const App = () => {
     );
   }
 
-  return <MainApp onSignOut={handleSignOut} user={{ email: user.email }} />;
+  if (isViewingInputs) {
+    return (
+      <div>
+        <button 
+          onClick={() => setIsViewingInputs(false)}
+          className="fixed top-4 left-4 text-gray-500 hover:text-white transition-colors font-mono"
+        >
+          ← back
+        </button>
+        <ViewInputs />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <MainApp onSignOut={handleSignOut} user={{ email: user.email }} />
+      <button 
+        onClick={() => setIsViewingInputs(true)}
+        className="fixed top-4 right-20 text-gray-500 hover:text-white transition-colors font-mono"
+      >
+        view inputs
+      </button>
+    </div>
+  );
 };
 
 export default App;

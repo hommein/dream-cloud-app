@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import MainApp from './components/MainApp';
-import ViewInputs from './components/ViewInputs';
+import ViewInputs from './components/viewInputs';
 
 declare global {
   interface Window {
